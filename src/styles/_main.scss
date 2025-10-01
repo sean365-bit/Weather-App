@@ -1,0 +1,146 @@
+/* Variables */
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+
+// neutral
+$neutral-900: hsl(243, 96%, 9%);
+$Neutral-800: hsl(243, 27%, 20%);
+$neutral-700: hsl(243, 23%, 24%);
+$neutral-600: hsl(243, 23%, 30%);
+$neutral-300: hsl(240, 6%, 70%);
+$neutral-200: hsl(250, 6%, 84%);
+$neutral-0: hsl(0, 0%, 100%);
+
+// orange
+$orange: hsl(28, 100%, 52%);
+
+// blue
+$blue500: hsl(233, 67%, 56%);
+$blue700: hsl(248, 70%, 36%);
+
+/* Spacing */
+$spacing-0: 0;
+$spacing-025: 2px;
+$spacing-050: 4px;
+$spacing-075: 6px;
+$spacing-100: 8px;
+$spacing-125: 10px;
+$spacing-150: 12px;
+$spacing-200: 16px;
+$spacing-250: 20px;
+$spacing-300: 24px;
+$spacing-400: 32px;
+$spacing-500: 40px;
+$spacing-600: 48px;
+$spacing-800: 64px;
+$spacing-1000: 80px;
+$spacing-1200: 96px;
+$spacing-1400: 112px;
+$spacing-1600: 128px;
+$spacing-1800: 140px;
+
+$radius-0: 0;
+$radius-4: 4px;
+$radius-6: 6px;
+$radius-8: 8px;
+$radius-10: 10px;
+$radius-12: 12px;
+$radius-16: 16px;
+$radius-20: 20px;
+$radius-24: 24px;
+$radius-full: 999px;
+
+/* mixins */
+@mixin displayFlex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Typography */
+@mixin textPreset1 {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600i;
+  font-style: italic;
+
+  font-size: 96px;
+  line-height: 100%;
+  letter-spacing: -2px;
+}
+
+@mixin textPreset2 {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: bold;
+  font-style: normal;
+
+  font-size: 52px;
+  line-height: 120%;
+  letter-spacing: 0;
+}
+
+@mixin textPreset3 {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: lighter;
+  font-style: normal;
+
+  font-size: 32px;
+  line-height: 100%;
+  letter-spacing: 0;
+}
+
+@mixin textPreset4 {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: bold;
+  font-style: normal;
+
+  font-size: 28px;
+  line-height: 120%;
+  letter-spacing: 0;
+}
+
+@mixin textPreset5 {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+
+  font-size: 20px;
+  line-height: 120%;
+  letter-spacing: 0;
+}
+
+@mixin textPreset6 {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+
+  font-size: 18px;
+  line-height: 120%;
+  letter-spacing: 0;
+}
+
+@mixin textPreset7 {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+
+  font-size: 16px;
+  line-height: 120%;
+  letter-spacing: 0;
+}
+
+@mixin textPreset8 {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: 0;
+}
