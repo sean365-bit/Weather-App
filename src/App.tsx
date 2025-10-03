@@ -5,9 +5,6 @@ function App() {
   return (
     <div className="app">
       <Header />
-      <main className="main">
-        {/* Current weather + forecast components here */}
-      </main>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import unitsIcon from "../assets/images/icon-units.svg";
 import dropdownIcon from "../assets/images/icon-dropdown.svg";
 import search from "../assets/images/icon-search.svg";
 import { useSearch } from "../hooks";
+import rainIcon from "../assets/images/icon-rain.webp";
 
 /* */
 import { useUnits } from "../hooks";
@@ -45,6 +46,7 @@ const Header = function () {
         today?
       </p>
 
+      {/* UI form */}
       <form onSubmit={handleSubmit(onSearch)} className="search_form">
         <div className="input_wrapper">
           <img src={search} alt="" className="search_icon" />
@@ -59,11 +61,13 @@ const Header = function () {
         <button type="submit">Search</button>
       </form>
 
+      {/* UI weather overview */}
       <div className="weather_overview">
         <p className="weather_area">Berlin, Germany</p>
         <p className="weather_date">Tuesday, Aug 5, 2025</p>
       </div>
 
+      {/* UI weather stats */}
       <div className="weather_stats">
         <div className="first_block">
           <div className="stats_card first_child">
@@ -85,6 +89,153 @@ const Header = function () {
             <p className="stats_tittle">Precipitation</p>
             <p className="stats_content">0 mm</p>
           </div>
+        </div>
+      </div>
+
+      {/* UI daily forecast */}
+      {/* current fix */}
+      <div className="daily_forecast_container">
+        <div className="forecast_card">
+          <p className="forecast_day">Tue</p>
+
+          <img src={rainIcon} alt="icon" className="forecast_icon" />
+
+          <div className="degree">
+            <p className="first_degree">20°</p>
+            <p className="second_degree">14°</p>
+          </div>
+        </div>
+
+        <div className="forecast_card">
+          <p className="forecast_day">Tue</p>
+
+          <img src={rainIcon} alt="icon" className="forecast_icon" />
+
+          <div className="degree">
+            <p className="first_degree">20°</p>
+            <p className="second_degree">14°</p>
+          </div>
+        </div>
+
+        <div className="forecast_card">
+          <p className="forecast_day">Tue</p>
+
+          <img src={rainIcon} alt="icon" className="forecast_icon" />
+
+          <div className="degree">
+            <p className="first_degree">20°</p>
+            <p className="second_degree">14°</p>
+          </div>
+        </div>
+
+        <div className="forecast_card">
+          <p className="forecast_day">Tue</p>
+
+          <img src={rainIcon} alt="icon" className="forecast_icon" />
+
+          <div className="degree">
+            <p className="first_degree">20°</p>
+            <p className="second_degree">14°</p>
+          </div>
+        </div>
+
+        <div className="forecast_card">
+          <p className="forecast_day">Tue</p>
+
+          <img src={rainIcon} alt="icon" className="forecast_icon" />
+
+          <div className="degree">
+            <p className="first_degree">20°</p>
+            <p className="second_degree">14°</p>
+          </div>
+        </div>
+
+        <div className="forecast_card">
+          <p className="forecast_day">Tue</p>
+
+          <img src={rainIcon} alt="icon" className="forecast_icon" />
+
+          <div className="degree">
+            <p className="first_degree">20°</p>
+            <p className="second_degree">14°</p>
+          </div>
+        </div>
+
+        <div className="forecast_card">
+          <p className="forecast_day">Tue</p>
+
+          <img src={rainIcon} alt="icon" className="forecast_icon" />
+
+          <div className="degree">
+            <p className="first_degree">20°</p>
+            <p className="second_degree">14°</p>
+          </div>
+        </div>
+      </div>
+
+      {/* UI Hourly Forecast */}
+      <div className="hourly_forecast_container">
+        <div className="hourly_forecast_content">
+          <div className="hour_heading">
+            <img src={rainIcon} alt="icon" className="hourly_icon" />
+            <div className="hour">3 PM</div>
+          </div>
+
+          <p className="hourly_degree">20°</p>
+        </div>
+
+        <div className="hourly_forecast_content">
+          <div className="hour_heading">
+            <img src={rainIcon} alt="icon" className="hourly_icon" />
+            <div className="hour">3 PM</div>
+          </div>
+
+          <p className="hourly_degree">20°</p>
+        </div>
+
+        <div className="hourly_forecast_content">
+          <div className="hour_heading">
+            <img src={rainIcon} alt="icon" className="hourly_icon" />
+            <div className="hour">3 PM</div>
+          </div>
+
+          <p className="hourly_degree">20°</p>
+        </div>
+
+        <div className="hourly_forecast_content">
+          <div className="hour_heading">
+            <img src={rainIcon} alt="icon" className="hourly_icon" />
+            <div className="hour">3 PM</div>
+          </div>
+
+          <p className="hourly_degree">20°</p>
+        </div>
+
+        <div className="hourly_forecast_content">
+          <div className="hour_heading">
+            <img src={rainIcon} alt="icon" className="hourly_icon" />
+            <div className="hour">3 PM</div>
+          </div>
+
+          <p className="hourly_degree">20°</p>
+        </div>
+
+        <div className="hourly_forecast_content">
+          <div className="hour_heading">
+            <img src={rainIcon} alt="icon" className="hourly_icon" />
+            <div className="hour">3 PM</div>
+          </div>
+
+          <p className="hourly_degree">20°</p>
+        </div>
+
+        <div className="hourly_forecast_content">
+          <div className="hour_heading">
+            <img src={rainIcon} alt="icon" className="hourly_icon" />
+            <div className="hour">3 PM</div>
+          </div>
+
+          <p className="hourly_degree">20°</p>
         </div>
       </div>
     </header>

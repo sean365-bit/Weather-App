@@ -65,13 +65,13 @@ header {
   margin-bottom: $spacing-400;
 }
 
-/* */
+/* form */
 .search_form {
   display: flex;
   flex-direction: column;
 
   width: 100%;
-  max-width: 420px; /* */
+  max-width: 480px; /* */
   margin: 0 auto;
   gap: $spacing-200;
   margin-bottom: $spacing-500;
@@ -122,7 +122,7 @@ header {
   }
 }
 
-/* */
+/* weather overview */
 .weather_overview {
   border-radius: $radius-20;
 
@@ -137,7 +137,10 @@ header {
   background-repeat: no-repeat; // prevents tiling
   //  width: 400px; // example width
 
-  height: 300px; // example height
+  width: 100%;
+  max-width: 480px; // keeps it from looking too wide on big screens
+  height: 350px;
+  margin: 0 auto;
   margin-bottom: $spacing-300;
 }
 
@@ -153,15 +156,20 @@ header {
   @include textPreset6;
 }
 
-/* */
+/* UI weather stats  */
 .weather_stats {
   color: $neutral-0;
-  margin-bottom: $spacing-300;
 
   display: flex;
   flex-direction: column;
 
   gap: $spacing-150;
+
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+
+  margin-bottom: $spacing-300;
 }
 
 .stats_card {
@@ -175,7 +183,6 @@ header {
   padding-left: 20px;
 
   height: 140px; /* */
-
   box-shadow: 0 1px 2px $neutral-200;
 }
 
@@ -198,4 +205,149 @@ header {
 .stats_content {
   color: $neutral-0;
   @include textPreset4;
+}
+
+/* UI daily forecast */
+.daily_forecast_container {
+  width: 100%;
+  max-width: 480px; /* */
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 1rem; // spacing between cards
+
+  margin-bottom: 30px; /* fix */
+}
+
+.forecast_card {
+  padding: 1rem;
+  background: $neutral-800;
+
+  border-radius: $radius-8;
+  box-shadow: 0 1px 2px $neutral-200;
+  height: 225px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  .forecast_day {
+    @include textPreset5;
+    color: $neutral-0;
+  }
+
+  .forecast_icon {
+    height: 100px; /* */
+  }
+
+  .degree {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    @include textPreset6;
+
+    .first_degree {
+      color: $neutral-0;
+    }
+
+    .second_degree {
+      color: $neutral-300;
+    }
+  }
+}
+
+/* UI Hourly Forecast */
+.hourly_forecast_container {
+  border-radius: $radius-16;
+
+  background: $neutral-800;
+
+  padding: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-250;
+
+  width: 100%;
+  max-width: 480px; // keeps it from looking too wide on big screens
+  margin: 0 auto;
+
+  margin-bottom: $spacing-400; /* fix */
+}
+
+.hourly_forecast_content {
+  height: 90px;
+  border-radius: $radius-10;
+
+  background: $neutral-600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1px 2px $neutral-200;
+}
+
+.hour_heading {
+  display: flex;
+  align-items: center;
+  gap: $spacing-150;
+  margin-left: $spacing-150;
+}
+
+.hour {
+  color: $neutral-0;
+  @include textPreset5;
+}
+
+.hourly_icon {
+  height: 65px;
+}
+
+.hourly_degree {
+  @include textPreset6;
+
+  color: $neutral-200;
+  margin-right: $spacing-150;
+}
+
+/* media queries */
+
+@media (min-width: 768px) {
+  .search_form {
+    flex-direction: row; // instead of stacked column
+    align-items: center;
+    max-width: 720px; // wider than mobile but still capped
+    gap: 1rem;
+  }
+
+  .search_form .input_wrapper {
+    flex: 1; // input grows to take remaining space
+  }
+
+  .search_form button {
+    width: auto; // button shrinks to fit content
+  }
+
+  .daily_forecast_container {
+    max-width: 800px;
+
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .search_form {
+    max-width: 960px; // allow wider but still centered
+  }
+
+  .search_form input {
+    font-size: 1.1rem; // slightly larger for readability
+    padding: 1.25rem 1.25rem 1.25rem 2.5rem;
+  }
+
+  .search_form button {
+    font-size: 1.1rem;
+    padding: 1.25rem 1.5rem;
+  }
 }
