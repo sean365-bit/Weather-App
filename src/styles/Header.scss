@@ -9,7 +9,11 @@ header {
   justify-content: space-between;
   align-items: center;
 
-  margin-bottom: $spacing-400;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  margin-top: $spacing-200;
+  margin-bottom: $spacing-600;
 }
 
 .dropdown_wrapper {
@@ -62,7 +66,7 @@ header {
   @include textPreset2;
   color: $neutral-0;
   text-align: center;
-  margin-bottom: $spacing-400;
+  margin-bottom: $spacing-800;
 }
 
 /* form */
@@ -71,7 +75,7 @@ header {
   flex-direction: column;
 
   width: 100%;
-  max-width: 480px; /* */
+  max-width: 480px;
   margin: 0 auto;
   gap: $spacing-200;
   margin-bottom: $spacing-500;
@@ -122,7 +126,7 @@ header {
   }
 }
 
-/* weather overview */
+/* UI weather overview */
 .weather_overview {
   border-radius: $radius-20;
 
@@ -132,14 +136,14 @@ header {
 
   background-image: url("../assets/images/bg-today-small.svg");
 
-  background-position: center; // keeps the image centered
-  background-size: cover; // makes the image cover the entire div
-  background-repeat: no-repeat; // prevents tiling
-  //  width: 400px; // example width
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 
   width: 100%;
-  max-width: 480px; // keeps it from looking too wide on big screens
   height: 350px;
+
+  max-width: 480px;
   margin: 0 auto;
   margin-bottom: $spacing-300;
 }
@@ -160,15 +164,13 @@ header {
 .weather_stats {
   color: $neutral-0;
 
-  display: flex;
-  flex-direction: column;
-
-  gap: $spacing-150;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
 
   width: 100%;
   max-width: 480px;
   margin: 0 auto;
-
   margin-bottom: $spacing-300;
 }
 
@@ -186,38 +188,27 @@ header {
   box-shadow: 0 1px 2px $neutral-200;
 }
 
-.first_block,
-.second_block {
-  display: flex;
-  gap: $spacing-150;
-}
-
-.first_child,
-.second_child {
-  flex: 1;
-}
-
 .stats_tittle {
-  color: $neutral-200;
+  color: $neutral-300;
   @include textPreset5;
 }
 
 .stats_content {
   color: $neutral-0;
-  @include textPreset4;
+  @include textPreset3;
 }
 
 /* UI daily forecast */
 .daily_forecast_container {
   width: 100%;
-  max-width: 480px; /* */
+  max-width: 480px;
   margin: 0 auto;
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 1rem; // spacing between cards
+  gap: 1rem;
 
-  margin-bottom: 30px; /* fix */
+  margin-bottom: $spacing-500; /* */
 }
 
 .forecast_card {
@@ -239,7 +230,7 @@ header {
   }
 
   .forecast_icon {
-    height: 100px; /* */
+    height: 100px;
   }
 
   .degree {
@@ -271,14 +262,14 @@ header {
   gap: $spacing-250;
 
   width: 100%;
-  max-width: 480px; // keeps it from looking too wide on big screens
+  max-width: 480px;
   margin: 0 auto;
 
-  margin-bottom: $spacing-400; /* fix */
+  margin-bottom: $spacing-400;
 }
 
 .hourly_forecast_content {
-  height: 90px;
+  height: 75px;
   border-radius: $radius-10;
 
   background: $neutral-600;
@@ -312,42 +303,79 @@ header {
 }
 
 /* media queries */
-
 @media (min-width: 768px) {
   .search_form {
-    flex-direction: row; // instead of stacked column
+    flex-direction: row;
     align-items: center;
-    max-width: 720px; // wider than mobile but still capped
+    max-width: 720px;
     gap: 1rem;
   }
 
   .search_form .input_wrapper {
-    flex: 1; // input grows to take remaining space
+    flex: 1;
   }
 
   .search_form button {
-    width: auto; // button shrinks to fit content
+    width: auto;
+  }
+
+  .heading_tittle_breaker {
+    display: none;
+  }
+
+  .heading_header,
+  .weather_overview,
+  .hourly_forecast_container {
+    max-width: 720px;
+  }
+
+  .weather_stats {
+    max-width: 720px;
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .daily_forecast_container {
-    max-width: 800px;
-
+    max-width: 720px;
     grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   }
 }
 
 @media (min-width: 1024px) {
   .search_form {
-    max-width: 960px; // allow wider but still centered
+    max-width: 960px;
   }
 
   .search_form input {
-    font-size: 1.1rem; // slightly larger for readability
+    font-size: 1.1rem;
     padding: 1.25rem 1.25rem 1.25rem 2.5rem;
   }
 
   .search_form button {
     font-size: 1.1rem;
     padding: 1.25rem 1.5rem;
+  }
+
+  .heading_header {
+    max-width: 1240px;
+  }
+
+  .weather_overview {
+    background-image: url("../assets/images/bg-today-large.svg");
+    max-width: 960px;
+  }
+
+  .desktop_version {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 2.5fr 1fr;
+    gap: 1.4rem;
+  }
+
+  .weather_stats,
+  .daily_forecast_container {
+    max-width: 960px;
   }
 }
