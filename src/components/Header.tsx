@@ -1,72 +1,60 @@
 import "../styles/Header.scss";
+
+import { useState } from "react";
+import { useUnits } from "../hooks";
 import logo from "../assets/images/logo.svg";
 import unitsIcon from "../assets/images/icon-units.svg";
 import dropdownIcon from "../assets/images/icon-dropdown.svg";
-import search from "../assets/images/icon-search.svg";
-import { useSearch } from "../hooks";
 import rainIcon from "../assets/images/icon-rain.webp";
+import Form from "./Form";
 
-/* */
-import { useUnits } from "../hooks";
+interface WeatherData {
+  hourly: {
+    temperature_2m: number[];
+    time: string[];
+    // add other properties as needed
+  };
+  // add other top-level properties as needed
+}
+
+/* helper function */
+const formatCurrentDate = () => {
+  return new Date().toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
 
 const Header = function () {
-  /* input */
-  const { query, handleChange, handleSubmit } = useSearch();
+  const [degre, setdegre] = useState("");
 
-  const onSearch = (q: string) => {
-    console.log("Searching for:", q);
-    // TODO: Replace with your API call
+  const handleDataFromChild = (data: WeatherData) => {
+    console.log("Received from child:", data);
+    setdegre(data.hourly.temperature_2m[16].toString());
   };
-  /* input */ // redo
-  const { isOpen, setIsOpen, wrapperRef } = useUnits();
 
   return (
     <header>
-      <div className="heading_header">
-        <img src={logo} alt="App Logo" />
-
-        <div className="dropdown_wrapper" ref={wrapperRef}>
-          <div className="dropdown" onClick={() => setIsOpen(!isOpen)}>
-            <img src={unitsIcon} alt="Units" />
-            <p>Units</p>
-            <img src={dropdownIcon} alt="Arrow" />
-          </div>
-
-          {isOpen && (
-            <ul className="dropdown_menu">
-              <li>Metric</li>
-              <li>Imperial</li>
-            </ul>
-          )}
-        </div>
-      </div>
-
+      <Heading />
       <p className="heading_tittle">
         How's the <br className="heading_tittle_breaker" /> sky looking
         <br className="heading_tittle_breaker" /> today?
       </p>
 
-      {/* UI form */}
-      <form onSubmit={handleSubmit(onSearch)} className="search_form">
-        <div className="input_wrapper">
-          <img src={search} alt="" className="search_icon" />
-          <input
-            type="text"
-            value={query}
-            onChange={handleChange}
-            placeholder="Search for a place..."
-            name="place"
-          />
-        </div>
-        <button type="submit">Search</button>
-      </form>
+      <Form onSearchResult={handleDataFromChild} />
 
       <div className="desktop_version">
         <div className="desktop_left">
           {/* UI weather overview */}
           <div className="weather_overview">
-            <p className="weather_area">Berlin, Germany</p>
-            <p className="weather_date">Tuesday, Aug 5, 2025</p>
+            <div className="overview_specs">
+              <p className="weather_area">San Salvador</p>
+              <p className="weather_date">{formatCurrentDate()}</p>
+            </div>
+
+            {degre && <p className="degrees">{degre}°</p>}
           </div>
 
           {/* UI weather stats */}
@@ -93,7 +81,7 @@ const Header = function () {
           </div>
 
           {/* UI daily forecast */}
-          {/* current fix */}
+          <p className="daily_forecast_title">Daily Forecast</p>
           <div className="daily_forecast_container">
             <div className="forecast_card">
               <p className="forecast_day">Tue</p>
@@ -315,5 +303,75 @@ const Header = function () {
     </header>
   );
 };
+
+const Heading = function () {
+  const { isOpen, setIsOpen, wrapperRef } = useUnits();
+
+  return (
+    <div className="heading_header">
+      <img src={logo} alt="App Logo" />
+
+      <div className="dropdown_wrapper" ref={wrapperRef}>
+        <div className="dropdown" onClick={() => setIsOpen(!isOpen)}>
+          <img src={unitsIcon} alt="Units" />
+          <p>Units</p>
+          <img src={dropdownIcon} alt="Arrow" />
+        </div>
+
+        {isOpen && (
+          <ul className="dropdown_menu">
+            <li>Metric</li>
+            <li>Imperial</li>
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/*
+async function getLocationName(lat: number, lon: number) {
+  const url = new URL(
+    "https://api.bigdatacloud.net/data/reverse-geocode-client",
+  );
+  url.searchParams.set("latitude", lat.toString());
+  url.searchParams.set("longitude", lon.toString());
+  url.searchParams.set("localityLanguage", "en");
+
+  const response = await fetch(url.toString());
+  const data = await response.json();
+
+  return {
+    city: data.city || "",
+    country: data.countryName || "",
+  };
+}
+*/
+
+/* helper function to get LAT and LON */
+/*
+const getGeolocation = function (): Promise<{
+  latitude: number;
+  longitude: number;
+}> {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject(new Error("Geolocation not supported"));
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        resolve({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      (error) => {
+        reject(error);
+      },
+    );
+  });
+};*/
 
 export default Header;
