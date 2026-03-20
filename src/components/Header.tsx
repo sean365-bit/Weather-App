@@ -1,21 +1,13 @@
 import "../styles/Header.scss";
-
 import { useState } from "react";
 import { useUnits } from "../hooks";
+import type { WeatherResponse } from "../types/ComponentTypes";
 import logo from "../assets/images/logo.svg";
 import unitsIcon from "../assets/images/icon-units.svg";
 import dropdownIcon from "../assets/images/icon-dropdown.svg";
 import rainIcon from "../assets/images/icon-rain.webp";
 import Form from "./Form";
-
-interface WeatherData {
-  hourly: {
-    temperature_2m: number[];
-    time: string[];
-    // add other properties as needed
-  };
-  // add other top-level properties as needed
-}
+import Loading from "./Loading";
 
 /* helper function */
 const formatCurrentDate = () => {
@@ -28,11 +20,16 @@ const formatCurrentDate = () => {
 };
 
 const Header = function () {
-  const [degre, setdegre] = useState("");
+  const [degre, setdegre] = useState<WeatherResponse | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleDataFromChild = (data: WeatherData) => {
-    console.log("Received from child:", data);
-    setdegre(data.hourly.temperature_2m[16].toString());
+  const handleDataFromChild = function (data: WeatherResponse) {
+    setdegre(data);
+    setLoading(false);
+  };
+
+  const handleLoadingStart = function () {
+    setLoading(true);
   };
 
   return (
@@ -43,40 +40,74 @@ const Header = function () {
         <br className="heading_tittle_breaker" /> today?
       </p>
 
-      <Form onSearchResult={handleDataFromChild} />
+      <Form
+        onSearchResult={handleDataFromChild}
+        onLoadingStart={handleLoadingStart}
+      />
 
       <div className="desktop_version">
         <div className="desktop_left">
           {/* UI weather overview */}
           <div className="weather_overview">
-            <div className="overview_specs">
-              <p className="weather_area">San Salvador</p>
-              <p className="weather_date">{formatCurrentDate()}</p>
-            </div>
-
-            {degre && <p className="degrees">{degre}°</p>}
+            {loading ? (
+              <Loading />
+            ) : (
+              degre && (
+                <>
+                  <div className="overview_specs">
+                    <p className="weather_area">{degre.timezone}</p>
+                    <p className="weather_date">{formatCurrentDate()}</p>
+                  </div>
+                  <p className="degrees">{degre.current.temperature_2m}°</p>
+                </>
+              )
+            )}
           </div>
 
           {/* UI weather stats */}
           <div className="weather_stats">
             <div className="stats_card">
               <p className="stats_tittle">Feels Like</p>
-              <p className="stats_content">18°</p>
+              <div className="stats_content">
+                {loading ? (
+                  <Loading />
+                ) : (
+                  degre && <p>{degre.current.apparent_temperature}°</p>
+                )}
+              </div>
             </div>
 
             <div className="stats_card">
               <p className="stats_tittle">Humidity</p>
-              <p className="stats_content">46%</p>
+              <div className="stats_content">
+                {loading ? (
+                  <Loading />
+                ) : (
+                  degre && <p>{degre.current.relative_humidity_2m} %</p>
+                )}
+              </div>
             </div>
 
             <div className="stats_card">
               <p className="stats_tittle">Wind</p>
-              <p className="stats_content">14 Km/h</p>
+              <div className="stats_content">
+                {loading ? (
+                  <Loading />
+                ) : (
+                  degre && <p>{degre.current.wind_speed_10m} Km/h</p>
+                )}
+              </div>
             </div>
 
             <div className="stats_card">
               <p className="stats_tittle">Precipitation</p>
-              <p className="stats_content">0 mm</p>
+              <div className="stats_content">
+                {loading ? (
+                  <Loading />
+                ) : (
+                  degre && <p>{degre.current.precipitation} mm</p>
+                )}
+              </div>
             </div>
           </div>
 

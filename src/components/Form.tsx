@@ -1,31 +1,11 @@
 import "../styles/Form.scss";
 import { useState } from "react";
+import type { WeatherResponse } from "../types/ComponentTypes";
 import search from "../assets/images/icon-search.svg";
 
-interface WeatherResponse {
-  latitude: number;
-  longitude: number;
-  timezone: string;
-  hourly: {
-    time: string[];
-    temperature_2m: number[];
-  };
-  hourly_units?: {
-    temperature_2m: string;
-  };
-}
-
-interface WeatherData {
-  hourly: {
-    temperature_2m: number[];
-    time: string[];
-    // add other properties as needed
-  };
-  // add other top-level properties as needed
-}
-
 interface FormProps {
-  onSearchResult: (data: WeatherData) => void;
+  onSearchResult: (data: WeatherResponse) => void;
+  onLoadingStart: () => void;
 }
 
 // function, from name to longitude and latitude
@@ -58,12 +38,9 @@ const searchForCity = async function (city: string) {
 };
 
 // function, from longitude and latitude to forecast
-const fetchWeatherData = async (
-  latitude: number,
-  longitude: number,
-): Promise<WeatherResponse> => {
+const fetchWeatherData = async (latitude: number, longitude: number) => {
   try {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&timezone=auto`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min,weather_code&hourly=temperature_2m,weather_code&current=temperature_2m,weather_code,apparent_temperature,relative_humidity_2m,wind_speed_10m,precipitation&timezone=auto`;
 
     const response = await fetch(url);
 
@@ -71,7 +48,7 @@ const fetchWeatherData = async (
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data: WeatherResponse = await response.json();
+    const data = await response.json();
     return data;
   } catch (error) {
     console.error("Error fetching weather data:", error);
@@ -79,7 +56,7 @@ const fetchWeatherData = async (
   }
 };
 
-const Form = function ({ onSearchResult }: FormProps) {
+const Form = function ({ onSearchResult, onLoadingStart }: FormProps) {
   const [country, setCountry] = useState("");
 
   const handleChange = function (e: React.ChangeEvent<HTMLInputElement>) {
@@ -91,8 +68,9 @@ const Form = function ({ onSearchResult }: FormProps) {
 
     if (!country.trim()) return;
 
-    const result = await searchForCity(country);
+    onLoadingStart();
 
+    const result = await searchForCity(country);
     const stats = await fetchWeatherData(result?.latitude, result?.longitude);
 
     onSearchResult(stats);
