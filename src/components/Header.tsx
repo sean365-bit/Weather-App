@@ -1,48 +1,53 @@
 import "../styles/Header.scss";
 import { useState } from "react";
 import { useUnits } from "../hooks";
+import { formatCurrentDate, formatCityName } from "../utils/weatherHelpers";
 import type { WeatherResponse } from "../types/ComponentTypes";
 import logo from "../assets/images/logo.svg";
 import unitsIcon from "../assets/images/icon-units.svg";
 import dropdownIcon from "../assets/images/icon-dropdown.svg";
-import rainIcon from "../assets/images/icon-rain.webp";
 import Form from "./Form";
 import Loading from "./Loading";
+import StatCard from "./StatCard";
+import DailyForecast from "./DailyForecast";
 
-/* helper function */
-const formatCurrentDate = () => {
-  return new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-};
+import rainIcon from "../assets/images/icon-rain.webp";
 
 const Header = function () {
-  const [degre, setdegre] = useState<WeatherResponse | null>(null);
+  const [weatherData, setWeatherData] = useState<WeatherResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [cityName, setCityName] = useState<string | null>(null);
 
-  const handleDataFromChild = function (data: WeatherResponse) {
-    setdegre(data);
+  const handleDataFromChild = function (data: WeatherResponse, city: string) {
+    setWeatherData(data);
+    setCityName(city);
     setLoading(false);
+    setError(null);
   };
 
   const handleLoadingStart = function () {
     setLoading(true);
+    setError(null);
+  };
+
+  const handleError = (errorMessage: string) => {
+    setError(errorMessage);
+    setLoading(false);
   };
 
   return (
     <header>
       <Heading />
-      <p className="heading_tittle">
-        How's the <br className="heading_tittle_breaker" /> sky looking
-        <br className="heading_tittle_breaker" /> today?
+      <p className="heading_title">
+        How's the <br className="heading_title_breaker" /> sky looking
+        <br className="heading_title_breaker" /> today?
       </p>
 
       <Form
         onSearchResult={handleDataFromChild}
         onLoadingStart={handleLoadingStart}
+        onError={handleError}
       />
 
       <div className="desktop_version">
@@ -51,183 +56,60 @@ const Header = function () {
           <div className="weather_overview">
             {loading ? (
               <Loading />
+            ) : error ? (
+              <p className="error_message">{error}</p>
             ) : (
-              degre && (
+              weatherData && (
                 <>
                   <div className="overview_specs">
-                    <p className="weather_area">{degre.timezone}</p>
+                    <p className="weather_area">
+                      {cityName && formatCityName(cityName)}
+                    </p>
                     <p className="weather_date">{formatCurrentDate()}</p>
                   </div>
-                  <p className="degrees">{degre.current.temperature_2m}°</p>
+                  <p className="degrees">
+                    {weatherData.current.temperature_2m}°
+                  </p>
                 </>
               )
             )}
           </div>
 
-          {/* UI weather stats */}
           <div className="weather_stats">
-            <div className="stats_card">
-              <p className="stats_tittle">Feels Like</p>
-              <div className="stats_content">
-                {loading ? (
-                  <Loading />
-                ) : (
-                  degre && <p>{degre.current.apparent_temperature}°</p>
-                )}
-              </div>
-            </div>
+            <StatCard
+              title="Feels Like"
+              value={weatherData?.current.apparent_temperature}
+              unit="°"
+              loading={loading}
+            />
 
-            <div className="stats_card">
-              <p className="stats_tittle">Humidity</p>
-              <div className="stats_content">
-                {loading ? (
-                  <Loading />
-                ) : (
-                  degre && <p>{degre.current.relative_humidity_2m} %</p>
-                )}
-              </div>
-            </div>
+            <StatCard
+              title="Humidity"
+              value={weatherData?.current.relative_humidity_2m}
+              unit="%"
+              loading={loading}
+            />
 
-            <div className="stats_card">
-              <p className="stats_tittle">Wind</p>
-              <div className="stats_content">
-                {loading ? (
-                  <Loading />
-                ) : (
-                  degre && <p>{degre.current.wind_speed_10m} Km/h</p>
-                )}
-              </div>
-            </div>
+            <StatCard
+              title="Wind"
+              value={weatherData?.current.wind_speed_10m}
+              unit="Km/h"
+              loading={loading}
+            />
 
-            <div className="stats_card">
-              <p className="stats_tittle">Precipitation</p>
-              <div className="stats_content">
-                {loading ? (
-                  <Loading />
-                ) : (
-                  degre && <p>{degre.current.precipitation} mm</p>
-                )}
-              </div>
-            </div>
+            <StatCard
+              title="Precipitation"
+              value={weatherData?.current.precipitation}
+              unit="mm"
+              loading={loading}
+            />
           </div>
 
-          {/* UI daily forecast */}
-          <p className="daily_forecast_title">Daily Forecast</p>
-          <div className="daily_forecast_container">
-            <div className="forecast_card">
-              <p className="forecast_day">Tue</p>
-
-              <img
-                src={rainIcon}
-                alt="icon"
-                className="forecast_icon"
-                loading="lazy"
-              />
-
-              <div className="degree">
-                <p className="first_degree">20°</p>
-                <p className="second_degree">14°</p>
-              </div>
-            </div>
-
-            <div className="forecast_card">
-              <p className="forecast_day">Tue</p>
-
-              <img
-                src={rainIcon}
-                alt="icon"
-                className="forecast_icon"
-                loading="lazy"
-              />
-
-              <div className="degree">
-                <p className="first_degree">20°</p>
-                <p className="second_degree">14°</p>
-              </div>
-            </div>
-
-            <div className="forecast_card">
-              <p className="forecast_day">Tue</p>
-
-              <img
-                src={rainIcon}
-                alt="icon"
-                className="forecast_icon"
-                loading="lazy"
-              />
-
-              <div className="degree">
-                <p className="first_degree">20°</p>
-                <p className="second_degree">14°</p>
-              </div>
-            </div>
-
-            <div className="forecast_card">
-              <p className="forecast_day">Tue</p>
-
-              <img
-                src={rainIcon}
-                alt="icon"
-                className="forecast_icon"
-                loading="lazy"
-              />
-
-              <div className="degree">
-                <p className="first_degree">20°</p>
-                <p className="second_degree">14°</p>
-              </div>
-            </div>
-
-            <div className="forecast_card">
-              <p className="forecast_day">Tue</p>
-
-              <img
-                src={rainIcon}
-                alt="icon"
-                className="forecast_icon"
-                loading="lazy"
-              />
-
-              <div className="degree">
-                <p className="first_degree">20°</p>
-                <p className="second_degree">14°</p>
-              </div>
-            </div>
-
-            <div className="forecast_card">
-              <p className="forecast_day">Tue</p>
-
-              <img
-                src={rainIcon}
-                alt="icon"
-                className="forecast_icon"
-                loading="lazy"
-              />
-
-              <div className="degree">
-                <p className="first_degree">20°</p>
-                <p className="second_degree">14°</p>
-              </div>
-            </div>
-
-            <div className="forecast_card">
-              <p className="forecast_day">Tue</p>
-
-              <img
-                src={rainIcon}
-                alt="icon"
-                className="forecast_icon"
-                loading="lazy"
-              />
-
-              <div className="degree">
-                <p className="first_degree">20°</p>
-                <p className="second_degree">14°</p>
-              </div>
-            </div>
-          </div>
+          {/* daily forecast */}
+          <DailyForecast weatherData={weatherData} loading={loading} />
         </div>
 
+        {/* desktop_right */}
         <div className="desktop_right">
           {/* UI Hourly Forecast */}
           <div className="hourly_forecast_container">
@@ -359,50 +241,5 @@ const Heading = function () {
     </div>
   );
 };
-
-/*
-async function getLocationName(lat: number, lon: number) {
-  const url = new URL(
-    "https://api.bigdatacloud.net/data/reverse-geocode-client",
-  );
-  url.searchParams.set("latitude", lat.toString());
-  url.searchParams.set("longitude", lon.toString());
-  url.searchParams.set("localityLanguage", "en");
-
-  const response = await fetch(url.toString());
-  const data = await response.json();
-
-  return {
-    city: data.city || "",
-    country: data.countryName || "",
-  };
-}
-*/
-
-/* helper function to get LAT and LON */
-/*
-const getGeolocation = function (): Promise<{
-  latitude: number;
-  longitude: number;
-}> {
-  return new Promise((resolve, reject) => {
-    if (!navigator.geolocation) {
-      reject(new Error("Geolocation not supported"));
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        resolve({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-      },
-      (error) => {
-        reject(error);
-      },
-    );
-  });
-};*/
 
 export default Header;

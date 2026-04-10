@@ -49,3 +49,15 @@ export interface WeatherResponse {
     weather_code: number[];
   };
 }
+
+export interface StatCardProps {
+  title: string;
+  value: number | undefined;
+  unit: string;
+  loading: boolean;
+}
+
+export interface dailyForecastProps {
+  weatherData: Pick<WeatherResponse, "daily"> | null;
+  loading: boolean;
+}

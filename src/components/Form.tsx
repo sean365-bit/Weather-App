@@ -4,8 +4,9 @@ import type { WeatherResponse } from "../types/ComponentTypes";
 import search from "../assets/images/icon-search.svg";
 
 interface FormProps {
-  onSearchResult: (data: WeatherResponse) => void;
+  onSearchResult: (data: WeatherResponse, city: string) => void;
   onLoadingStart: () => void;
+  onError?: (error: string) => void; // Optional error handler
 }
 
 // function, from name to longitude and latitude
@@ -56,7 +57,7 @@ const fetchWeatherData = async (latitude: number, longitude: number) => {
   }
 };
 
-const Form = function ({ onSearchResult, onLoadingStart }: FormProps) {
+const Form = function ({ onSearchResult, onLoadingStart, onError }: FormProps) {
   const [country, setCountry] = useState("");
 
   const handleChange = function (e: React.ChangeEvent<HTMLInputElement>) {
@@ -68,13 +69,28 @@ const Form = function ({ onSearchResult, onLoadingStart }: FormProps) {
 
     if (!country.trim()) return;
 
-    onLoadingStart();
+    onLoadingStart(); //
 
-    const result = await searchForCity(country);
-    const stats = await fetchWeatherData(result?.latitude, result?.longitude);
+    try {
+      const result = await searchForCity(country);
 
-    onSearchResult(stats);
-    setCountry("");
+      if (!result) {
+        onError?.("No search result found!");
+
+        setCountry("");
+        return;
+      }
+
+      const stats = await fetchWeatherData(result.latitude, result.longitude);
+      console.log(stats);
+
+      // onSearchResult(stats);
+      onSearchResult(stats, country);
+      setCountry("");
+    } catch (error) {
+      console.error("Error fetching weather data:", error);
+      onError?.("Failed to fetch weather data. Please try again.");
+    }
   };
 
   return (

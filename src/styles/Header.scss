@@ -1,5 +1,9 @@
 @use "./main" as *;
 
+.error_message {
+  color: white;
+}
+
 header {
   width: 100%;
 }
@@ -62,7 +66,7 @@ header {
 }
 
 /* out */
-.heading_tittle {
+.heading_title {
   @include textPreset2;
   color: $neutral-0;
   text-align: center;
@@ -144,7 +148,7 @@ header {
   box-shadow: 0 1px 2px $neutral-200;
 }
 
-.stats_tittle {
+.stats_title {
   color: $neutral-300;
   @include textPreset5;
 }
@@ -178,11 +182,11 @@ header {
 }
 
 .forecast_card {
-  padding: 1rem;
+  padding: 0.5rem;
   background: $neutral-800;
 
   border-radius: $radius-8;
-  box-shadow: 0 1px 2px $neutral-200;
+  box-shadow: 0 1px 2px $neutral-300;
   height: 225px;
 
   display: flex;
@@ -199,17 +203,17 @@ header {
     height: 100px;
   }
 
-  .degree {
+  .daily_temperatures {
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     @include textPreset6;
 
-    .first_degree {
+    .high_temperature {
       color: $neutral-0;
     }
 
-    .second_degree {
+    .low_temperature {
       color: $neutral-300;
     }
   }
@@ -270,7 +274,7 @@ header {
 
 /* media queries */
 @media (min-width: 768px) {
-  .heading_tittle_breaker {
+  .heading_title_breaker {
     display: none;
   }
 
