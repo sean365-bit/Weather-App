@@ -57,7 +57,19 @@ export interface StatCardProps {
   loading: boolean;
 }
 
+export interface WeatherOverviewProps {
+  weatherData: Pick<WeatherResponse, "current"> | null;
+  loading: boolean;
+  error: string | null;
+  cityName: string | null;
+}
+
 export interface dailyForecastProps {
   weatherData: Pick<WeatherResponse, "daily"> | null;
   loading: boolean;
+}
+
+export interface hourlyForecastProps {
+  weatherData: Pick<WeatherResponse, "hourly"> | null;
+  
 }

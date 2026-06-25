@@ -1,17 +1,17 @@
 import "../styles/Header.scss";
 import { useState } from "react";
 import { useUnits } from "../hooks";
-import { formatCurrentDate, formatCityName } from "../utils/weatherHelpers";
 import type { WeatherResponse } from "../types/ComponentTypes";
 import logo from "../assets/images/logo.svg";
 import unitsIcon from "../assets/images/icon-units.svg";
 import dropdownIcon from "../assets/images/icon-dropdown.svg";
 import Form from "./Form";
-import Loading from "./Loading";
+
 import StatCard from "./StatCard";
 import DailyForecast from "./DailyForecast";
+import HourlyForecast from "./HourlyForecast";
 
-import rainIcon from "../assets/images/icon-rain.webp";
+import WeatherOverview from "./WeatherOverview";
 
 const Header = function () {
   const [weatherData, setWeatherData] = useState<WeatherResponse | null>(null);
@@ -51,29 +51,14 @@ const Header = function () {
       />
 
       <div className="desktop_version">
-        <div className="desktop_left">
+        <div>
           {/* UI weather overview */}
-          <div className="weather_overview">
-            {loading ? (
-              <Loading />
-            ) : error ? (
-              <p className="error_message">{error}</p>
-            ) : (
-              weatherData && (
-                <>
-                  <div className="overview_specs">
-                    <p className="weather_area">
-                      {cityName && formatCityName(cityName)}
-                    </p>
-                    <p className="weather_date">{formatCurrentDate()}</p>
-                  </div>
-                  <p className="degrees">
-                    {weatherData.current.temperature_2m}°
-                  </p>
-                </>
-              )
-            )}
-          </div>
+          <WeatherOverview
+            weatherData={weatherData}
+            loading={loading}
+            error={error}
+            cityName={cityName}
+          />
 
           <div className="weather_stats">
             <StatCard
@@ -109,108 +94,8 @@ const Header = function () {
           <DailyForecast weatherData={weatherData} loading={loading} />
         </div>
 
-        {/* desktop_right */}
-        <div className="desktop_right">
-          {/* UI Hourly Forecast */}
-          <div className="hourly_forecast_container">
-            <div className="hourly_forecast_content">
-              <div className="hour_heading">
-                <img
-                  src={rainIcon}
-                  alt="icon"
-                  className="hourly_icon"
-                  loading="lazy"
-                />
-                <div className="hour">3 PM</div>
-              </div>
-
-              <p className="hourly_degree">20°</p>
-            </div>
-
-            <div className="hourly_forecast_content">
-              <div className="hour_heading">
-                <img
-                  src={rainIcon}
-                  alt="icon"
-                  className="hourly_icon"
-                  loading="lazy"
-                />
-                <div className="hour">3 PM</div>
-              </div>
-
-              <p className="hourly_degree">20°</p>
-            </div>
-
-            <div className="hourly_forecast_content">
-              <div className="hour_heading">
-                <img
-                  src={rainIcon}
-                  alt="icon"
-                  className="hourly_icon"
-                  loading="lazy"
-                />
-                <div className="hour">3 PM</div>
-              </div>
-
-              <p className="hourly_degree">20°</p>
-            </div>
-
-            <div className="hourly_forecast_content">
-              <div className="hour_heading">
-                <img
-                  src={rainIcon}
-                  alt="icon"
-                  className="hourly_icon"
-                  loading="lazy"
-                />
-                <div className="hour">3 PM</div>
-              </div>
-
-              <p className="hourly_degree">20°</p>
-            </div>
-
-            <div className="hourly_forecast_content">
-              <div className="hour_heading">
-                <img
-                  src={rainIcon}
-                  alt="icon"
-                  className="hourly_icon"
-                  loading="lazy"
-                />
-                <div className="hour">3 PM</div>
-              </div>
-
-              <p className="hourly_degree">20°</p>
-            </div>
-
-            <div className="hourly_forecast_content">
-              <div className="hour_heading">
-                <img
-                  src={rainIcon}
-                  alt="icon"
-                  className="hourly_icon"
-                  loading="lazy"
-                />
-                <div className="hour">3 PM</div>
-              </div>
-
-              <p className="hourly_degree">20°</p>
-            </div>
-
-            <div className="hourly_forecast_content">
-              <div className="hour_heading">
-                <img
-                  src={rainIcon}
-                  alt="icon"
-                  className="hourly_icon"
-                  loading="lazy"
-                />
-                <div className="hour">3 PM</div>
-              </div>
-
-              <p className="hourly_degree">20°</p>
-            </div>
-          </div>
+        <div>
+          <HourlyForecast weatherData={weatherData} />
         </div>
       </div>
     </header>

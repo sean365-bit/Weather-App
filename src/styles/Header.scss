@@ -118,6 +118,14 @@ header {
 .degrees {
   @include textPreset1;
   color: $neutral-0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overview_icon {
+  height: 125px;
 }
 
 /* UI weather stats  */
@@ -262,13 +270,13 @@ header {
 }
 
 .hourly_icon {
-  height: 65px;
+  height: 50px;
 }
 
 .hourly_degree {
   @include textPreset6;
 
-  color: $neutral-200;
+  color: $neutral-0;
   margin-right: $spacing-150;
 }
 
