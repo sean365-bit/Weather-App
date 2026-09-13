@@ -7,6 +7,7 @@ interface FormProps {
   onSearchResult: (data: WeatherResponse, city: string) => void;
   onLoadingStart: () => void;
   onError?: (error: string) => void; // Optional error handler
+  onHandlenotFound: () => void;
 }
 
 // function, from name to longitude and latitude
@@ -57,7 +58,12 @@ const fetchWeatherData = async (latitude: number, longitude: number) => {
   }
 };
 
-const Form = function ({ onSearchResult, onLoadingStart, onError }: FormProps) {
+const Form = function ({
+  onSearchResult,
+  onLoadingStart,
+  onError,
+  onHandlenotFound,
+}: FormProps) {
   const [country, setCountry] = useState("");
 
   const handleChange = function (e: React.ChangeEvent<HTMLInputElement>) {
@@ -76,6 +82,7 @@ const Form = function ({ onSearchResult, onLoadingStart, onError }: FormProps) {
 
       if (!result) {
         onError?.("No search result found!");
+        onHandlenotFound();
 
         setCountry("");
         return;

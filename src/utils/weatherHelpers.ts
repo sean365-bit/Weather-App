@@ -11,8 +11,8 @@ export const kelvinToCelsius = (kelvin: number): number => {
   return Math.round(kelvin - 273.15);
 };
 
-export const formatCurrentDate = () => {
-  return new Date().toLocaleDateString("en-US", {
+export const formatCurrentDate = (date: string) => {
+  return new Date(date).toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
     month: "short",
@@ -20,19 +20,38 @@ export const formatCurrentDate = () => {
   });
 };
 
-export const getWeatherIcon = function (code: number): string {
-  if (code === 0) return sunIcon; // icon-sunny
-  if (code === 1) return sunIcon; // icon-sunny
-  if (code <= 2) return partlyCloudyIcon; // icon-partly-cloudy
-  if (code === 3) return cloudyIcon; // icon-overcast
-  if (code >= 45 && code <= 48) return fogIcon; // icon-fog
-  if (code >= 51 && code <= 57) return drizzleIcon; // icon-drizzle
-  if (code >= 61 && code <= 67) return rainIcon; // icon-rain
-  if (code >= 71 && code <= 77) return snowIcon; // icon-snow
-  if (code >= 80 && code <= 82) return rainIcon; // icon-rain
-  if (code >= 85 && code <= 86) return snowIcon; // icon-snow
-  if (code >= 95 && code <= 99) return thunderstormIcon; // icon-storm
-  return sunIcon; // fallback
+const WEATHER_ICON_MAP = [
+  { range: [0, 1], icon: sunIcon },
+  { range: [2, 2], icon: partlyCloudyIcon },
+  { range: [3, 3], icon: cloudyIcon },
+  { range: [45, 48], icon: fogIcon },
+  { range: [51, 57], icon: drizzleIcon },
+  { range: [61, 67], icon: rainIcon },
+  { range: [71, 77], icon: snowIcon },
+  { range: [80, 82], icon: rainIcon },
+  { range: [85, 86], icon: snowIcon },
+  { range: [95, 99], icon: thunderstormIcon },
+];
+
+export const getWeatherIcon = (code: number): string => {
+  const match = WEATHER_ICON_MAP.find(
+    ({ range: [min, max] }) => code >= min && code <= max,
+  );
+
+  if (!match) {
+    console.warn(`Unrecognized weather code: ${code}`);
+    return sunIcon;
+  }
+
+  return match.icon;
+};
+
+export const formatHour = (isoTime: string): string => {
+  const date = new Date(isoTime);
+  const hours24 = date.getHours();
+  const hours12 = hours24 % 12 || 12; // converts 0 → 12, 13 → 1, etc.
+  const period = hours24 >= 12 ? "PM" : "AM";
+  return `${hours12} ${period}`;
 };
 
 export const formatCityName = (city: string) => {

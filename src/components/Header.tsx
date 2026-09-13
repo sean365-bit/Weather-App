@@ -12,29 +12,62 @@ import DailyForecast from "./DailyForecast";
 import HourlyForecast from "./HourlyForecast";
 
 import WeatherOverview from "./WeatherOverview";
+import NoSearchFound from "./NoSearchFound";
 
 const Header = function () {
   const [weatherData, setWeatherData] = useState<WeatherResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notFound, setNotFound] = useState(false);
   const [cityName, setCityName] = useState<string | null>(null);
 
   const handleDataFromChild = function (data: WeatherResponse, city: string) {
     setWeatherData(data);
     setCityName(city);
+
     setLoading(false);
     setError(null);
+
+    setNotFound(false); //
   };
 
   const handleLoadingStart = function () {
     setLoading(true);
     setError(null);
+
+    setNotFound(false); //
+  };
+
+  const handlenotFound = function () {
+    setNotFound(true);
   };
 
   const handleError = (errorMessage: string) => {
-    setError(errorMessage);
     setLoading(false);
+    setError(errorMessage);
+
+    setNotFound(false); //
   };
+
+  if (notFound)
+    return (
+      <header>
+        <Heading />
+        <p className="heading_title">
+          How's the <br className="heading_title_breaker" /> sky looking
+          <br className="heading_title_breaker" /> today?
+        </p>
+
+        <Form
+          onSearchResult={handleDataFromChild}
+          onLoadingStart={handleLoadingStart}
+          onError={handleError}
+          onHandlenotFound={handlenotFound}
+        />
+
+        <NoSearchFound />
+      </header>
+    );
 
   return (
     <header>
@@ -48,6 +81,7 @@ const Header = function () {
         onSearchResult={handleDataFromChild}
         onLoadingStart={handleLoadingStart}
         onError={handleError}
+        onHandlenotFound={handlenotFound}
       />
 
       <div className="desktop_version">
@@ -58,14 +92,15 @@ const Header = function () {
             loading={loading}
             error={error}
             cityName={cityName}
+            notFound={notFound}
           />
-
           <div className="weather_stats">
             <StatCard
               title="Feels Like"
               value={weatherData?.current.apparent_temperature}
               unit="°"
               loading={loading}
+              notFound={notFound}
             />
 
             <StatCard
@@ -73,6 +108,7 @@ const Header = function () {
               value={weatherData?.current.relative_humidity_2m}
               unit="%"
               loading={loading}
+              notFound={notFound}
             />
 
             <StatCard
@@ -80,6 +116,7 @@ const Header = function () {
               value={weatherData?.current.wind_speed_10m}
               unit="Km/h"
               loading={loading}
+              notFound={notFound}
             />
 
             <StatCard
@@ -87,15 +124,23 @@ const Header = function () {
               value={weatherData?.current.precipitation}
               unit="mm"
               loading={loading}
+              notFound={notFound}
             />
           </div>
 
-          {/* daily forecast */}
-          <DailyForecast weatherData={weatherData} loading={loading} />
+          <DailyForecast
+            weatherData={weatherData}
+            loading={loading}
+            notFound={notFound}
+          />
         </div>
 
         <div>
-          <HourlyForecast weatherData={weatherData} />
+          <HourlyForecast
+            weatherData={weatherData}
+            loading={loading}
+            notFound={notFound}
+          />
         </div>
       </div>
     </header>

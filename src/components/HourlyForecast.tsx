@@ -1,40 +1,66 @@
-import type { hourlyForecastProps } from "../types/ComponentTypes";
-import { getWeatherIcon } from "../utils/weatherHelpers";
+import type {
+  HourlyForecastProps,
+  HourlyForecastCardProps,
+} from "../types/ComponentTypes";
+import { getWeatherIcon, formatHour } from "../utils/weatherHelpers";
 
-const formatHour = (isoTime: string): string => {
-  const date = new Date(isoTime);
-  const hours24 = date.getHours();
-  const hours12 = hours24 % 12 || 12; // converts 0 → 12, 13 → 1, etc.
-  const period = hours24 >= 12 ? "PM" : "AM";
-  return `${hours12} ${period}`;
-};
+function HourlyForecast({
+  weatherData,
+  loading,
+  notFound,
+}: HourlyForecastProps) {
+  if (loading)
+    return (
+      <div className="hourly_forecast_container">
+        <p className="daily_forecast_title">Hourly Forecast</p>
 
-function HourlyForecast({ weatherData }: hourlyForecastProps) {
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div key={i} className="hourly_forecast_content" />
+        ))}
+      </div>
+    );
+
+  if (!weatherData || notFound) return null;
+
+  const { time, temperature_2m, weather_code } = weatherData.hourly;
+
+  const startIndex = 8;
+  const endIndex = 16;
+
   return (
     <div className="hourly_forecast_container">
       <p className="daily_forecast_title">Hourly Forecast</p>
 
-      {weatherData?.hourly.time.slice(8, 16).map((time, index) => {
-        const icon = getWeatherIcon(weatherData.hourly.weather_code[index]);
-
+      {time.slice(startIndex, endIndex).map((hourlyTime, index) => {
+        const dataIndex = startIndex + index;
         return (
-          <div className="hourly_forecast_content" key={time}>
-            <div className="hour_heading">
-              <img
-                src={icon}
-                alt="icon"
-                className="hourly_icon"
-                loading="lazy"
-              />
-
-              <p className="hour">{formatHour(time)}</p>
-            </div>
-            <p className="hourly_degree">
-              {weatherData?.hourly.temperature_2m[index]}°C
-            </p>
-          </div>
+          <HourlyForecastCard
+            key={hourlyTime}
+            time={hourlyTime}
+            temperature={temperature_2m[dataIndex]}
+            weatherCode={weather_code[dataIndex]}
+          />
         );
       })}
+    </div>
+  );
+}
+
+function HourlyForecastCard({
+  time,
+  temperature,
+  weatherCode,
+}: HourlyForecastCardProps) {
+  const icon = getWeatherIcon(weatherCode);
+
+  return (
+    <div className="hourly_forecast_content">
+      <div className="hour_heading">
+        <img src={icon} alt="icon" className="hourly_icon" loading="lazy" />
+
+        <p className="hour">{formatHour(time)}</p>
+      </div>
+      <p className="hourly_degree">{temperature}°C</p>
     </div>
   );
 }

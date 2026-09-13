@@ -55,6 +55,7 @@ export interface StatCardProps {
   value: number | undefined;
   unit: string;
   loading: boolean;
+  notFound: boolean;
 }
 
 export interface WeatherOverviewProps {
@@ -62,14 +63,30 @@ export interface WeatherOverviewProps {
   loading: boolean;
   error: string | null;
   cityName: string | null;
+  notFound: boolean;
 }
 
-export interface dailyForecastProps {
+export interface DailyForecastProps {
   weatherData: Pick<WeatherResponse, "daily"> | null;
   loading: boolean;
+  notFound: boolean;
 }
 
-export interface hourlyForecastProps {
+export interface HourlyForecastProps {
   weatherData: Pick<WeatherResponse, "hourly"> | null;
-  
+  loading: boolean;
+  notFound: boolean;
+}
+
+export interface HourlyForecastCardProps {
+  time: string;
+  temperature: number;
+  weatherCode: number;
+}
+
+export interface ForecastCardProps {
+  dateStr: string;
+  weatherCode: number;
+  maxTemp: number;
+  minTemp: number;
 }

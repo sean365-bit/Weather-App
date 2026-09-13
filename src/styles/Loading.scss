@@ -1,5 +1,14 @@
 @use "./main" as *;
 
+.loading_holder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 15px;
+}
+
 .bouncing_loader {
   display: flex;
   justify-content: center;
@@ -13,6 +22,11 @@
   background-color: $neutral-0;
   opacity: 1;
   animation: bouncing_loader 0.6s infinite alternate;
+}
+
+.loading_text {
+  color: $neutral-0;
+  @include textPreset5;
 }
 
 @keyframes bouncing_loader {
@@ -29,4 +43,3 @@
 .bouncing_loader > div:nth-child(3) {
   animation-delay: 0.4s;
 }
-

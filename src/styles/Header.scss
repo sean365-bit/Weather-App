@@ -74,7 +74,7 @@ header {
 }
 
 /* UI weather overview */
-.weather_overview {
+%weather_overview_base {
   border-radius: $radius-20;
 
   padding-left: 30px;
@@ -84,8 +84,6 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-
-  background-image: url("../assets/images/bg-today-small.svg");
 
   background-position: center;
   background-size: cover;
@@ -97,6 +95,31 @@ header {
   max-width: 480px;
   margin: 0 auto;
   margin-bottom: $spacing-300;
+}
+
+.weather_overview {
+  @extend %weather_overview_base;
+  background-image: url("../assets/images/bg-today-small.svg");
+}
+
+.weather_overview_loading {
+  @extend %weather_overview_base;
+  background-color: $neutral-800;
+}
+
+.not_found {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include textPreset6;
+  font-size: 46px;
+
+  color: white;
+
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 .overview_specs {
@@ -152,8 +175,7 @@ header {
   justify-content: space-evenly;
   padding-left: 20px;
 
-  height: 140px; /* */
-  box-shadow: 0 1px 2px $neutral-200;
+  height: 140px;
 }
 
 .stats_title {
@@ -194,7 +216,6 @@ header {
   background: $neutral-800;
 
   border-radius: $radius-8;
-  box-shadow: 0 1px 2px $neutral-300;
   height: 225px;
 
   display: flex;
@@ -209,13 +230,14 @@ header {
 
   .forecast_icon {
     height: 100px;
+    width: 100px;
   }
 
   .daily_temperatures {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    @include textPreset6;
+    @include textPreset7;
 
     .high_temperature {
       color: $neutral-0;
@@ -254,7 +276,6 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 1px 2px $neutral-200;
 }
 
 .hour_heading {
@@ -271,6 +292,7 @@ header {
 
 .hourly_icon {
   height: 50px;
+  width: 50px;
 }
 
 .hourly_degree {
@@ -288,8 +310,13 @@ header {
 
   .heading_header,
   .weather_overview,
+  .weather_overview_loading,
   .hourly_forecast_container,
   .daily_forecast_title {
+    max-width: 720px;
+  }
+
+  .not_found {
     max-width: 720px;
   }
 
@@ -327,6 +354,10 @@ header {
     max-width: 960px;
   }
 
+  .weather_overview_loading {
+    max-width: 960px;
+  }
+
   .desktop_version {
     width: 100%;
     max-width: 1240px;
@@ -335,6 +366,10 @@ header {
     display: grid;
     grid-template-columns: 2.5fr 1fr;
     gap: 1.4rem;
+  }
+
+  .not_found {
+    max-width: 1240px;
   }
 
   .weather_stats,
